@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - E-Learning USP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B1538;
+            --primary-light: #A91D3A;
+            --primary-dark: #6B0F2B;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ========================================= */
+        /* LOGIN PAGE */
+        /* ========================================= */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        /* Left Side - Features Showcase */
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: pulse-bg 15s ease-in-out infinite;
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: -30%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            animation: pulse-bg 20s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-10%, -10%) scale(1.1); }
+        }
+
+        .login-left-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            max-width: 420px;
+        }
+
+        .left-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .left-logo-fallback {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 28px;
+            margin: 0 auto 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-left-content h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .login-left-content > p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .features-list {
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .feature-item:first-child {
+            padding-top: 0;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .feature-text strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        /* Right Side - Login Form */
+        .login-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background: var(--bg);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .login-logo-fallback {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 26px;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(139, 21, 56, 0.3);
+        }
+
+        .login-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .login-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 36px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: var(--bg);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(139, 21, 56, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .input-icon-wrapper .form-input {
+            padding-left: 54px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Form Row */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-checkbox input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .form-checkbox label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: var(--primary);
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(139, 21, 56, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 21, 56, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .spinner {
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 28px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 18px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Social Login */
+        .social-login {
+            display: flex;
+            gap: 14px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: rgba(139, 21, 56, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .social-btn span {
+            font-size: 20px;
+        }
+
+        /* Login Footer */
+        .login-footer {
+            text-align: center;
+            margin-top: 28px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Copyright */
+        .copyright {
+            text-align: center;
+            margin-top: 32px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* ========================================= */
+        /* RESPONSIVE DESIGN */
+        /* ========================================= */
+        @media (max-width: 1024px) {
+            .login-left {
+                padding: 40px 30px;
+            }
+
+            .login-left-content h1 {
+                font-size: 30px;
+            }
+
+            .features-list {
+                padding: 20px;
+            }
+
+            .feature-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .login-left {
+                display: none;
+            }
+
+            .login-right {
+                padding: 30px 24px;
+            }
+
+            .login-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-right {
+                padding: 24px 16px;
+            }
+
+            .login-card {
+                padding: 28px 24px;
+                border-radius: 20px;
+            }
+
+            .login-header h2 {
+                font-size: 24px;
+            }
+
+            .login-header p {
+                font-size: 14px;
+            }
+
+            .form-input {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+
+            .input-icon-wrapper .form-input {
+                padding-left: 48px;
+            }
+
+            .input-icon {
+                left: 16px;
+                font-size: 18px;
+            }
+
+            .login-btn {
+                padding: 16px;
+                font-size: 15px;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+
+            .social-btn {
+                padding: 12px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+
+        /* ========================================= */
+        /* SUCCESS REDIRECT ANIMATION */
+        /* ========================================= */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .success-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin-bottom: 24px;
+            animation: success-bounce 0.6s ease;
+        }
+
+        @keyframes success-bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .success-overlay h2 {
+            color: var(--text);
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .success-overlay p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .redirect-loader {
+            margin-top: 24px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .redirect-loader span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: loader-bounce 0.6s infinite alternate;
+        }
+
+        .redirect-loader span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .redirect-loader span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes loader-bounce {
+            to { opacity: 0.3; transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page">
+        <!-- Left Side - Features Showcase -->
+        <div class="login-left">
+            <div class="login-left-content">
+                <img src="LOGO USP.png" alt="Logo USP" class="left-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="left-logo-fallback" style="display: none;">USP</div>
+                
+                <h1>E-Learning USP</h1>
+                <p>Platform pembelajaran daring modern untuk mahasiswa dan dosen Universitas Safin Pati. Belajar lebih mudah, kapan saja dan di mana saja.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">📚</div>
+                        <div class="feature-text">
+                            <strong>Akses Materi</strong>
+                            Unduh dan pelajari materi kuliah kapan saja
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text">
+                            <strong>Progress Tracking</strong>
+                            Pantau kemajuan belajar secara real-time
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📸</div>
+                        <div class="feature-text">
+                            <strong>Face Recognition</strong>
+                            Sistem absensi modern dengan verifikasi wajah
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-text">
+                            <strong>Responsive Design</strong>
+                            Optimal di semua perangkat desktop & mobile
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="login-right">
+            <div class="login-container">
+                <div class="login-header">
+                    <img src="LOGO USP.png" alt="Logo USP" class="login-logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                    <div id="logoFallback" class="login-logo-fallback" style="display: none;">USP</div>
+                    <h2>Selamat Datang!</h2>
+                    <p>Masuk ke akun E-Learning Anda</p>
+                </div>
+
+                <div class="login-card">
+                    <!-- Alert Messages -->
+                    <div id="loginAlert" class="alert alert-error">
+                        <span>⚠️</span>
+                        <span id="alertMessage">Username atau password salah</span>
+                    </div>
+
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label">NIM / Username</label>
+                            <div class="input-icon-wrapper">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="username" class="form-input" placeholder="Masukkan NIM atau username" value="2024102004" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Kata Sandi</label>
+                            <div class="input-icon-wrapper">
+                                <span class="input-icon">🔒</span>
+                                <input type="password" id="password" class="form-input" placeholder="Masukkan kata sandi" value="password123" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-checkbox">
+                                <input type="checkbox" id="remember" checked>
+                                <label for="remember">Ingat saya</label>
+                            </div>
+                            <a href="#" class="forgot-link">Lupa kata sandi?</a>
+                        </div>
+
+                        <button type="submit" id="loginBtn" class="login-btn">
+                            <span id="loginBtnText">Masuk</span>
+                            <div id="loginSpinner" class="spinner" style="display: none;"></div>
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>atau masuk dengan</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button type="button" class="social-btn" onclick="socialLogin('google')">
+                            <span>📧</span> Google
+                        </button>
+                        <!-- <button type="button" class="social-btn" onclick="socialLogin('sso')">
+                            <span>🔑</span> SSO USP
+                        </button> -->
+                    </div>
+                </div>
+
+                <div class="login-footer">
+                    Belum punya akun? <a href="#">Hubungi Admin</a>
+                </div>
+
+                <div class="copyright">
+                    © 2026 Universitas Safin Pati. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="successOverlay" class="success-overlay">
+        <div class="success-icon">✓</div>
+        <h2>Login Berhasil!</h2>
+        <p>Mengalihkan ke Dashboard...</p>
+        <div class="redirect-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script>
+        // Handle Login Form Submit
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const alert = document.getElementById('loginAlert');
+            
+            // Hide any previous alerts
+            alert.classList.remove('show');
+            
+            // Validate input
+            if (!username || !password) {
+                alert.classList.add('show');
+                document.getElementById('alertMessage').textContent = 'Username dan password harus diisi';
+                return;
+            }
+            
+            // Show loading state
+            loginBtn.classList.add('loading');
+            loginBtnText.textContent = 'Memproses...';
+            loginSpinner.style.display = 'block';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Reset button
+                loginBtn.classList.remove('loading');
+                loginBtnText.textContent = 'Masuk';
+                loginSpinner.style.display = 'none';
+                
+                // Simple validation (demo - accept any input)
+                if (username && password) {
+                    // Show success overlay
+                    document.getElementById('successOverlay').classList.add('show');
+                    
+                    // Redirect to dashboard after 2 seconds
+                    setTimeout(() => {
+                        // In real app, redirect to dashboard
+                        // window.location.href = 'ELearning_USP_Complete.html';
+                        
+                        // For demo, show alert
+                        window.location.href = 'e-learning_usp_with_profile.html';
+                    }, 2000);
+                } else {
+                    // Show error
+                    alert.classList.add('show');
+                    document.getElementById('alertMessage').textContent = 'Username atau password salah';
+                }
+            }, 1500);
+        }
+        
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+        
+        // Social Login (Demo)
+        function socialLogin(provider) {
+            const alert = document.getElementById('loginAlert');
+            alert.classList.remove('alert-error');
+            alert.classList.add('alert-success', 'show');
+            document.getElementById('alertMessage').textContent = 
+                provider === 'google' 
+                    ? '📧 Menghubungkan ke Google...' 
+                    : '🔑 Menghubungkan ke SSO USP...';
+            
+            setTimeout(() => {
+                document.getElementById('successOverlay').classList.add('show');
+                setTimeout(() => {
+                    window.location.href = 'e-learning_usp_with_profile.html';
+                }, 2000);
+            }, 1500);
+        }
+        
+        // Handle Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Focus on username input on page load
+        window.addEventListener('load', function() {
+            document.getElementById('username').focus();
+        });
+    </script>
+</body>
+</html>

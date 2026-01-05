@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning USP - Modern UI/UX Redesign</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B1538;
+            --primary-light: #A91D3A;
+            --primary-dark: #6B0F2B;
+            --secondary: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --blue: #3b82f6;
+            --gold: #D4AF37;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overflow-x: hidden; width: 100%; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        
+        /* Navigation */
+        .nav { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1200px; margin: 0 auto; }
+        .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-img { height: 44px; width: auto; }
+        .logo-text { font-weight: 700; font-size: 18px; color: var(--primary); }
+        .logo-text span { color: var(--text-secondary); font-weight: 500; font-size: 14px; }
+        .nav-links { display: flex; gap: 6px; }
+        .nav-link { padding: 8px 14px; border-radius: 8px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-weight: 500; font-size: 14px; transition: all 0.2s; white-space: nowrap; }
+        .nav-link:hover { background: var(--bg); }
+        .nav-link.active { background: var(--primary); color: white; }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .search-box { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 8px 12px; border: 1px solid var(--border); }
+        .search-box input { border: none; background: transparent; outline: none; width: 140px; font-size: 14px; }
+        .icon-btn { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; }
+        .badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; }
+        
+        /* Profile Dropdown */
+        .profile { display: flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+        .profile-name { font-weight: 500; font-size: 14px; }
+        .profile-dropdown { position: absolute; top: 100%; right: 0; margin-top: 8px; background: var(--card); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid var(--border); min-width: 200px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s; z-index: 1000; }
+        .profile:hover .profile-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-header { padding: 16px; border-bottom: 1px solid var(--border); }
+        .dropdown-header-name { font-weight: 600; font-size: 14px; }
+        .dropdown-header-email { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+        .dropdown-item { padding: 12px 16px; display: flex; align-items: center; gap: 10px; color: var(--text); font-size: 14px; cursor: pointer; transition: background 0.2s; }
+        .dropdown-item:hover { background: var(--bg); }
+        .dropdown-item.danger { border-top: 1px solid var(--border); color: var(--danger); }
+        
+        /* Main */
+        .main { max-width: 1200px; margin: 0 auto; padding: 20px 16px; width: 100%; }
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* Welcome Banner */
+        .welcome { background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 16px; padding: 24px; margin-bottom: 20px; color: white; }
+        .welcome h1 { font-size: 24px; margin-bottom: 6px; }
+        .welcome p { opacity: 0.9; font-size: 14px; }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card); border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .stat-label { color: var(--text-secondary); font-size: 13px; }
+        .stat-value { font-size: 24px; font-weight: 700; margin-top: 4px; }
+        .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        
+        /* Content Grid */
+        .content-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; width: 100%; }
+        .content-left { min-width: 0; }
+        .content-right { width: 320px; flex-shrink: 0; }
+        
+        .card { background: var(--card); border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid var(--border); margin-bottom: 16px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .card-title { font-size: 15px; font-weight: 600; }
+        .card-link { color: var(--primary); background: none; border: none; cursor: pointer; font-weight: 500; font-size: 13px; }
+        
+        /* Quick Actions */
+        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .action-btn { padding: 14px 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; }
+        .action-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .action-btn .icon { font-size: 24px; }
+        .action-btn .label { font-size: 12px; font-weight: 500; }
+        
+        /* Course Cards */
+        .courses-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; margin: 0 -4px; padding: 4px; }
+        .courses-scroll::-webkit-scrollbar { height: 6px; }
+        .courses-scroll::-webkit-scrollbar-track { background: var(--bg); border-radius: 3px; }
+        .courses-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .course-mini { min-width: 200px; max-width: 200px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
+        .course-mini:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .course-mini-thumb { height: 70px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .course-mini-info { padding: 10px; }
+        .course-mini-info h4 { font-size: 13px; margin-bottom: 3px; line-height: 1.3; }
+        .course-mini-info p { color: var(--text-secondary); font-size: 11px; margin-bottom: 6px; }
+        .progress-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+        .progress-fill { height: 100%; border-radius: 3px; }
+        .course-footer { display: flex; justify-content: space-between; align-items: center; }
+        .course-footer span { font-size: 11px; color: var(--text-secondary); }
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 10px; }
+        .tag-danger { background: rgba(239,68,68,0.15); color: var(--danger); }
+        
+        /* Deadlines */
+        .deadline-list { display: flex; flex-direction: column; gap: 10px; }
+        .deadline-item { padding: 10px 12px; border-radius: 8px; background: var(--bg); border-left: 3px solid; }
+        .deadline-item.urgent { border-left-color: var(--danger); }
+        .deadline-item.soon { border-left-color: var(--warning); }
+        .deadline-item.ok { border-left-color: var(--secondary); }
+        .deadline-item h5 { font-size: 13px; margin-bottom: 2px; font-weight: 500; }
+        .deadline-item p { color: var(--text-secondary); font-size: 11px; }
+        .deadline-date { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-top: 6px; font-weight: 600; }
+        
+        /* Mini Calendar */
+        .mini-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+        .mini-cal .day-name { color: var(--text-secondary); font-size: 10px; padding: 4px 2px; font-weight: 500; }
+        .mini-cal .day { padding: 6px 2px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        .mini-cal .day:hover { background: var(--bg); }
+        .mini-cal .day.today { background: var(--primary); color: white; }
+        .mini-cal .day.event { background: rgba(239,68,68,0.15); color: var(--danger); }
+        
+        /* Full Calendar Page */
+        .calendar-container { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+        .calendar-main { background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .calendar-title { display: flex; align-items: center; gap: 16px; }
+        .calendar-title h2 { font-size: 24px; font-weight: 600; }
+        .calendar-nav { display: flex; align-items: center; gap: 8px; }
+        .calendar-nav-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; }
+        .calendar-nav-btn:hover { background: var(--bg); border-color: var(--primary); }
+        .calendar-month { font-size: 18px; font-weight: 600; min-width: 180px; text-align: center; }
+        .calendar-actions { display: flex; gap: 12px; align-items: center; }
+        .calendar-filter { padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 14px; min-width: 180px; }
+        .btn-add-event { padding: 10px 20px; border-radius: 10px; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .btn-add-event:hover { background: var(--primary-light); transform: translateY(-2px); }
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .calendar-day-header { padding: 14px 8px; text-align: center; font-weight: 600; font-size: 13px; color: var(--text-secondary); background: var(--bg); border-bottom: 1px solid var(--border); }
+        .calendar-day { min-height: 100px; padding: 8px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--card); transition: all 0.2s; cursor: pointer; }
+        .calendar-day:nth-child(7n) { border-right: none; }
+        .calendar-day:hover { background: var(--bg); }
+        .calendar-day.other-month { background: #f8fafc; }
+        .calendar-day.other-month .day-number { color: #cbd5e1; }
+        .calendar-day.today { background: rgba(139,21,56,0.05); }
+        .calendar-day.today .day-number { background: var(--primary); color: white; }
+        .day-number { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+        .day-events { display: flex; flex-direction: column; gap: 4px; }
+        .day-event { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: all 0.2s; }
+        .day-event:hover { transform: scale(1.02); }
+        .day-event.kehadiran { background: rgba(245,158,11,0.15); color: #b45309; border-left: 3px solid var(--warning); }
+        .day-event.presensi { background: rgba(239,68,68,0.15); color: #dc2626; border-left: 3px solid var(--danger); }
+        .day-event.tugas { background: rgba(59,130,246,0.15); color: #2563eb; border-left: 3px solid var(--blue); }
+        .day-event.quiz { background: rgba(139,92,246,0.15); color: #7c3aed; border-left: 3px solid var(--purple); }
+        .day-event.meeting { background: rgba(16,185,129,0.15); color: #059669; border-left: 3px solid var(--secondary); }
+        
+        .calendar-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .sidebar-card { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+        .sidebar-card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .sidebar-mini-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .sidebar-mini-cal .day-name { color: var(--text-secondary); font-size: 11px; padding: 6px 2px; font-weight: 600; }
+        .sidebar-mini-cal .day { padding: 8px 4px; border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .sidebar-mini-cal .day:hover { background: var(--bg); }
+        .sidebar-mini-cal .day.today { background: var(--primary); color: white; font-weight: 600; }
+        .sidebar-mini-cal .day.has-event { position: relative; }
+        .sidebar-mini-cal .day.has-event::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; border-radius: 50%; background: var(--danger); }
+        
+        .upcoming-events { display: flex; flex-direction: column; gap: 12px; }
+        .upcoming-event { display: flex; gap: 12px; padding: 14px; background: var(--bg); border-radius: 12px; transition: all 0.2s; cursor: pointer; }
+        .upcoming-event:hover { background: #f1f5f9; transform: translateX(4px); }
+        .event-date-box { width: 50px; height: 50px; border-radius: 10px; background: var(--primary); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+        .event-date-box .day { font-size: 18px; font-weight: 700; line-height: 1; }
+        .event-date-box .month { font-size: 10px; text-transform: uppercase; opacity: 0.9; }
+        .event-info { flex: 1; min-width: 0; }
+        .event-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .event-info p { font-size: 12px; color: var(--text-secondary); }
+        .event-type { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; margin-top: 6px; }
+        .event-type.kehadiran { background: rgba(245,158,11,0.15); color: #b45309; }
+        .event-type.presensi { background: rgba(239,68,68,0.15); color: #dc2626; }
+        .event-type.tugas { background: rgba(59,130,246,0.15); color: #2563eb; }
+        
+        .legend-list { display: flex; flex-direction: column; gap: 10px; }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .legend-color { width: 14px; height: 14px; border-radius: 4px; }
+        .legend-color.kehadiran { background: var(--warning); }
+        .legend-color.presensi { background: var(--danger); }
+        .legend-color.tugas { background: var(--blue); }
+        .legend-color.quiz { background: var(--purple); }
+        .legend-color.meeting { background: var(--secondary); }
+        
+        @media (max-width: 1024px) {
+            .calendar-container { grid-template-columns: 1fr; }
+            .calendar-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        }
+        @media (max-width: 768px) {
+            .calendar-header { flex-direction: column; align-items: flex-start; }
+            .calendar-actions { width: 100%; flex-direction: column; }
+            .calendar-filter { width: 100%; }
+            .btn-add-event { width: 100%; justify-content: center; }
+            .calendar-day { min-height: 70px; padding: 4px; }
+            .day-number { width: 24px; height: 24px; font-size: 11px; }
+            .day-event { padding: 2px 4px; font-size: 9px; }
+            .calendar-sidebar { grid-template-columns: 1fr; }
+        }
+        
+        /* Courses Page */
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .page-title { font-size: 22px; font-weight: 600; }
+        .page-subtitle { color: var(--text-secondary); margin-top: 2px; font-size: 14px; }
+        .filters { display: flex; gap: 10px; }
+        .filter-select { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 14px; }
+        .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .course-card { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; border: 1px solid var(--border); transition: all 0.3s; }
+        .course-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .course-thumb { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
+        .new-badge { position: absolute; top: 10px; right: 10px; background: var(--secondary); color: white; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .course-content { padding: 14px; }
+        .course-code { color: var(--text-secondary); font-size: 10px; background: var(--bg); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
+        .course-content h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .course-lecturer { color: var(--text-secondary); font-size: 12px; margin-bottom: 10px; }
+        .progress-section { margin-bottom: 10px; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 11px; }
+        .progress-header span:first-child { color: var(--text-secondary); }
+        .progress-header span:last-child { font-weight: 600; }
+        .progress-bar-lg { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+        .course-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .course-tag { padding: 3px 8px; border-radius: 6px; font-size: 11px; }
+        .course-tag.tasks { background: rgba(239,68,68,0.12); color: var(--danger); }
+        .course-tag.semester { background: rgba(139,21,56,0.12); color: var(--primary); }
+        
+        /* Course Detail */
+        .breadcrumb { margin-bottom: 14px; }
+        .breadcrumb button { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 14px; font-weight: 500; }
+        .course-header { border-radius: 14px; padding: 20px; margin-bottom: 20px; color: white; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .code-badge { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 16px; font-size: 11px; display: inline-block; margin-bottom: 10px; }
+        .course-header h1 { font-size: 24px; margin-bottom: 6px; }
+        .course-header .lecturer { opacity: 0.9; margin-bottom: 4px; font-size: 14px; }
+        .course-header .info { opacity: 0.8; font-size: 13px; }
+        .progress-display { text-align: right; }
+        .progress-display .value { font-size: 32px; font-weight: 700; }
+        .progress-display .label { font-size: 13px; opacity: 0.9; }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 4px; background: var(--card); padding: 4px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border); overflow-x: auto; }
+        .tab { flex: 1; padding: 10px 12px; border-radius: 6px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-weight: 500; font-size: 13px; transition: all 0.2s; white-space: nowrap; min-width: fit-content; }
+        .tab:hover { background: var(--bg); }
+        .tab.active { background: var(--primary); color: white; }
+        .tab-content { background: var(--card); border-radius: 14px; padding: 20px; border: 1px solid var(--border); display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Week Section */
+        .week-section { margin-bottom: 14px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+        .week-header { padding: 14px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .week-badge { background: var(--primary); color: white; padding: 3px 10px; border-radius: 14px; font-size: 11px; margin-right: 10px; }
+        .week-title { font-weight: 600; font-size: 14px; }
+        .week-content { padding: 14px; }
+        .material-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; flex-wrap: wrap; }
+        .material-item:last-child { border-bottom: none; }
+        .material-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px; }
+        .material-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; flex-shrink: 0; }
+        .material-icon.pdf { background: #ef4444; }
+        .material-icon.video { background: #8b5cf6; }
+        .material-icon.link { background: #3b82f6; }
+        .material-icon.quiz { background: #f59e0b; }
+        .material-icon.assignment { background: #10b981; }
+        .material-text h5 { font-size: 13px; margin-bottom: 2px; }
+        .material-text p { color: var(--danger); font-size: 11px; }
+        .status-done { color: var(--secondary); font-weight: 500; font-size: 13px; }
+        .btn { padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 13px; white-space: nowrap; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); }
+        
+        /* Attendance */
+        .attendance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .btn-attendance { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; cursor: pointer; font-weight: 600; font-size: 14px; }
+        .attendance-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .att-stat { padding: 14px; border-radius: 10px; text-align: center; }
+        .att-stat .value { font-size: 24px; font-weight: 700; }
+        .att-stat .label { font-size: 12px; margin-top: 2px; }
+        .att-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .att-table th { padding: 10px; text-align: left; color: var(--text-secondary); font-weight: 600; background: var(--bg); font-size: 12px; }
+        .att-table td { padding: 10px; border-bottom: 1px solid var(--border); }
+        .status-badge { padding: 3px 10px; border-radius: 14px; font-size: 11px; font-weight: 500; }
+        .status-badge.hadir { background: rgba(16,185,129,0.15); color: var(--secondary); }
+        .status-badge.tidak { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .status-badge.belum { background: rgba(245,158,11,0.15); color: var(--warning); }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 16px; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal { background: var(--card); border-radius: 16px; width: 100%; max-width: 460px; max-height: 90vh; overflow: auto; transform: translateY(20px); transition: all 0.3s; }
+        .modal-overlay.show .modal { transform: translateY(0); }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 18px; }
+        .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--bg); cursor: pointer; font-size: 18px; }
+        .modal-steps { padding: 14px 20px; background: var(--bg); display: flex; justify-content: space-between; }
+        .step { display: flex; align-items: center; gap: 6px; }
+        .step-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; background: var(--border); color: var(--text-secondary); }
+        .step.active .step-circle { background: var(--primary); color: white; }
+        .step.done .step-circle { background: var(--secondary); color: white; }
+        .step-label { font-size: 12px; color: var(--text-secondary); }
+        .step.active .step-label { color: var(--text); font-weight: 500; }
+        .modal-body { padding: 20px; text-align: center; }
+        .verify-icon { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .verify-icon.success { background: rgba(16,185,129,0.15); }
+        .verify-title { font-size: 16px; margin-bottom: 6px; }
+        .verify-desc { color: var(--text-secondary); margin-bottom: 20px; font-size: 14px; }
+        .verify-info { background: var(--bg); border-radius: 10px; padding: 14px; margin-bottom: 20px; text-align: left; }
+        .verify-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+        .verify-row span:first-child { color: var(--text-secondary); }
+        .verify-row span:last-child { font-weight: 500; }
+        .verify-row .success { color: var(--secondary); }
+        .verify-alert { background: rgba(16,185,129,0.1); border-radius: 8px; padding: 10px; color: var(--secondary); margin-bottom: 20px; font-size: 13px; }
+        .btn-full { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .btn-full.primary { background: var(--primary); color: white; }
+        .btn-full.success { background: linear-gradient(135deg, var(--secondary), #34d399); color: white; }
+        .camera-preview { width: 100%; height: 240px; border-radius: 12px; background: #1e293b; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .face-guide { width: 140px; height: 180px; border-radius: 50%; border: 3px dashed rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; }
+        .face-guide span { font-size: 56px; opacity: 0.5; }
+        .camera-status { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: white; padding: 6px 14px; border-radius: 16px; font-size: 12px; }
+        .similarity-bar { margin-bottom: 20px; }
+        .similarity-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+        .similarity-header span:first-child { color: var(--text-secondary); }
+        .similarity-header span:last-child { color: var(--secondary); font-weight: 600; }
+        .similarity-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .similarity-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), #34d399); border-radius: 4px; transition: width 0.5s; }
+        .similarity-note { color: var(--text-secondary); font-size: 11px; margin-top: 6px; }
+        .success-animation { animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* ========================================= */
+        /* PROFILE PAGE STYLES */
+        /* ========================================= */
+        .profile-header-banner { background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 20px; padding: 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .profile-header-banner::before { content: ''; position: absolute; top: -50%; right: -20%; width: 60%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); }
+        .profile-header-content { display: flex; align-items: center; gap: 24px; position: relative; z-index: 1; }
+        .profile-avatar-large { width: 120px; height: 120px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700; color: var(--primary); border: 4px solid rgba(255,255,255,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.2); position: relative; flex-shrink: 0; }
+        .avatar-edit-btn { position: absolute; bottom: 4px; right: 4px; width: 36px; height: 36px; border-radius: 50%; background: var(--primary); border: 3px solid white; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s; }
+        .avatar-edit-btn:hover { background: var(--primary-dark); transform: scale(1.1); }
+        .profile-header-info { flex: 1; color: white; }
+        .profile-header-name { font-size: 32px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .profile-nim { font-size: 16px; opacity: 0.9; margin-bottom: 4px; }
+        .profile-prodi { font-size: 14px; opacity: 0.8; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .profile-prodi-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; backdrop-filter: blur(10px); }
+        .profile-header-actions { display: flex; gap: 12px; flex-shrink: 0; }
+        .btn-white { padding: 12px 24px; border-radius: 12px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; background: white; color: var(--primary); }
+        .btn-white:hover { background: rgba(255,255,255,0.9); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-outline-white { padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: white; }
+        
+        /* Profile Grid */
+        .profile-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+        .profile-card { background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border); margin-bottom: 24px; }
+        .profile-card:last-child { margin-bottom: 0; }
+        .profile-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .profile-card-title { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .profile-card-title-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .profile-card-action { color: var(--primary); background: none; border: none; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .profile-card-action:hover { color: var(--primary-dark); }
+        
+        /* Detail Items */
+        .detail-list { display: flex; flex-direction: column; gap: 16px; }
+        .detail-item { display: flex; align-items: flex-start; gap: 16px; padding: 16px; background: var(--bg); border-radius: 12px; transition: all 0.2s; }
+        .detail-item:hover { background: #f1f5f9; }
+        .detail-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .detail-content { flex: 1; min-width: 0; }
+        .detail-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+        .detail-value { font-size: 15px; font-weight: 500; color: var(--text); word-break: break-word; }
+        .detail-value a { color: var(--primary); text-decoration: none; }
+        .detail-value a:hover { text-decoration: underline; }
+        .detail-note { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+        
+        /* Profile Stats */
+        .profile-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .profile-stat-item { background: var(--bg); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; }
+        .profile-stat-item:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        .profile-stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 12px; }
+        .profile-stat-value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .profile-stat-label { font-size: 13px; color: var(--text-secondary); }
+        
+        /* Course List in Profile */
+        .profile-course-list { display: flex; flex-direction: column; gap: 12px; }
+        .profile-course-item { display: flex; align-items: center; gap: 14px; padding: 14px; background: var(--bg); border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .profile-course-item:hover { background: #f1f5f9; transform: translateX(4px); }
+        .profile-course-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; color: white; }
+        .profile-course-info { flex: 1; min-width: 0; }
+        .profile-course-code { font-size: 11px; color: var(--text-secondary); background: white; padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 4px; }
+        .profile-course-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-course-arrow { color: var(--text-secondary); font-size: 18px; }
+        
+        /* Activity Log */
+        .activity-list { display: flex; flex-direction: column; gap: 16px; }
+        .activity-item { display: flex; gap: 16px; padding: 16px; background: var(--bg); border-radius: 12px; }
+        .activity-icon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .activity-content { flex: 1; }
+        .activity-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .activity-date { font-size: 13px; color: var(--text-secondary); }
+        .activity-meta { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+        
+        /* Quick Links */
+        .quick-links { display: flex; flex-direction: column; gap: 8px; }
+        .quick-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg); border-radius: 10px; color: var(--text); text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
+        .quick-link:hover { background: var(--primary); color: white; transform: translateX(4px); }
+        .quick-link span:first-child { font-size: 18px; }
+        .quick-link span:last-child { margin-left: auto; opacity: 0.5; }
+        
+        /* QR Code Section */
+        .qr-section { text-align: center; padding: 20px; background: var(--bg); border-radius: 12px; }
+        .qr-code { width: 140px; height: 140px; background: white; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border); font-size: 14px; color: var(--text-secondary); }
+        .qr-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .qr-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
+        .btn-qr { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .btn-qr:hover { background: var(--primary-dark); }
+        .app-download { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .app-download-link { color: var(--primary); font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .app-download-link:hover { text-decoration: underline; }
+        
+        /* Edit Modal */
+        .modal-lg { max-width: 500px; }
+        .modal-footer { padding: 0 24px 24px; display: flex; gap: 12px; justify-content: flex-end; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+        .form-input { width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; font-family: inherit; transition: all 0.3s; background: var(--bg); }
+        .form-input:focus { outline: none; border-color: var(--primary); background: white; }
+        .form-input:disabled { background: #f1f5f9; color: var(--text-secondary); cursor: not-allowed; }
+        .btn-secondary { background: var(--bg); color: var(--text); padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-secondary:hover { background: var(--border); }
+        .btn-primary-modal { background: var(--primary); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary-modal:hover { background: var(--primary-dark); }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .content-right { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+            .content-right .card { margin-bottom: 0; }
+            .courses-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .profile-grid { grid-template-columns: 1fr; }
+            .profile-header-content { flex-direction: column; text-align: center; }
+            .profile-header-info { text-align: center; }
+            .profile-prodi { justify-content: center; }
+            .profile-header-actions { justify-content: center; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-inner { flex-wrap: wrap; height: auto; padding: 10px 0; gap: 10px; }
+            .nav-links { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+            .nav-link { padding: 6px 12px; font-size: 13px; }
+            .search-box { display: none; }
+            .profile-name { display: none; }
+            .welcome h1 { font-size: 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 12px; }
+            .stat-value { font-size: 20px; }
+            .stat-icon { width: 38px; height: 38px; font-size: 18px; }
+            .content-right { grid-template-columns: 1fr; }
+            .quick-actions { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+            .action-btn { padding: 10px 4px; }
+            .action-btn .icon { font-size: 20px; }
+            .action-btn .label { font-size: 10px; }
+            .courses-grid { grid-template-columns: 1fr; }
+            .course-mini { min-width: 170px; max-width: 170px; }
+            .attendance-stats { grid-template-columns: repeat(2, 1fr); }
+            .tabs { flex-wrap: wrap; }
+            .tab { flex: none; width: calc(50% - 4px); text-align: center; }
+            .course-header { padding: 16px; }
+            .course-header h1 { font-size: 20px; }
+            .att-table { font-size: 12px; }
+            .att-table th, .att-table td { padding: 8px 6px; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .profile-header-banner { padding: 24px 20px; border-radius: 16px; }
+            .profile-avatar-large { width: 100px; height: 100px; font-size: 40px; }
+            .profile-header-name { font-size: 24px; }
+            .profile-header-actions { flex-direction: column; width: 100%; }
+            .btn-white, .btn-outline-white { width: 100%; justify-content: center; }
+        }
+        
+        @media (max-width: 480px) {
+            .main { padding: 12px; }
+            .welcome { padding: 16px; border-radius: 12px; }
+            .welcome h1 { font-size: 18px; }
+            .welcome p { font-size: 13px; }
+            .stats-grid { gap: 8px; }
+            .stat-card { padding: 10px; flex-direction: column; align-items: flex-start; gap: 8px; }
+            .stat-value { font-size: 18px; }
+            .card, .profile-card { padding: 12px; border-radius: 10px; }
+            .card-title { font-size: 14px; }
+            .quick-actions { grid-template-columns: repeat(2, 1fr); }
+            .course-mini { min-width: 150px; max-width: 150px; }
+            .course-mini-thumb { height: 60px; font-size: 28px; }
+            .course-mini-info { padding: 8px; }
+            .course-mini-info h4 { font-size: 12px; }
+            .attendance-stats { gap: 8px; }
+            .att-stat { padding: 10px; }
+            .att-stat .value { font-size: 20px; }
+            .att-stat .label { font-size: 11px; }
+            .modal { border-radius: 12px; }
+            .modal-header { padding: 16px; }
+            .modal-body { padding: 16px; }
+            .camera-preview { height: 200px; }
+            .detail-item { flex-direction: column; gap: 12px; }
+            .profile-stat-item { padding: 16px; }
+            .profile-stat-value { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="logo" onclick="showPage('dashboard')">
+                <img src="LOGO USP.png" alt="USP Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="display: none; width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">USP</div>
+                <div class="logo-text">E-Learning<br><span>Universitas Safin Pati</span></div>
+            </div>
+            <div class="nav-links">
+                <button class="nav-link active" onclick="showPage('dashboard')">📊 Dasbor</button>
+                <button class="nav-link" onclick="showPage('courses')">📚 Kursus</button>
+                <button class="nav-link" onclick="showPage('calendar')">📅 Kalender</button>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Cari kursus...">
+                </div>
+                <button class="icon-btn">🔔<span class="badge">3</span></button>
+                <div class="profile">
+                    <div class="avatar">AS</div>
+                    <span class="profile-name">Ahmad S.</span>
+                    <div class="profile-dropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-header-name">Ahmad Saiful</div>
+                            <div class="dropdown-header-email"><a href="" class="__cf_email__" data-cfemail="27464f4a46437854464e41524b67525457094644094e43">ahmadsaifullpro@gmail.com</a></div>
+                        </div>
+                        <div class="dropdown-item" onclick="showPage('profile')">👤 Profil Saya</div>
+                        <div class="dropdown-item">⚙️ Pengaturan</div>
+                        <div class="dropdown-item">📊 Nilai Saya</div>
+                        <div class="dropdown-item danger" onclick="logout()">🚪 Keluar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+            <div class="welcome">
+                <h1>Selamat Datang, Ahmad! 👋</h1>
+                <p>Semester III - Teknik Informatika | 7 tugas menunggu dikerjakan</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div><div class="stat-label">Kursus Aktif</div><div class="stat-value">6</div></div>
+                    <div class="stat-icon" style="background: rgba(139,21,56,0.12);">📚</div>
+                </div>
+                <div class="stat-card">
+                    <div><div class="stat-label">Tugas Pending</div><div class="stat-value" style="color: var(--danger);">7</div></div>
+                    <div class="stat-icon" style="background: rgba(239,68,68,0.12);">📝</div>
+                </div>
+                <div class="stat-card">
+                    <div><div class="stat-label">Kehadiran</div><div class="stat-value" style="color: var(--secondary);">92%</div></div>
+                    <div class="stat-icon" style="background: rgba(16,185,129,0.12);">✅</div>
+                </div>
+                <div class="stat-card">
+                    <div><div class="stat-label">IP Semester</div><div class="stat-value" style="color: var(--warning);">3.65</div></div>
+                    <div class="stat-icon" style="background: rgba(245,158,11,0.12);">⭐</div>
+                </div>
+            </div>
+            <div class="content-grid">
+                <div class="content-left">
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">Akses Cepat</h3></div>
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="showPage('courses')"><span class="icon">📚</span><span class="label">Kursus</span></button>
+                            <button class="action-btn"><span class="icon">📝</span><span class="label">Tugas</span></button>
+                            <button class="action-btn"><span class="icon">💬</span><span class="label">Forum</span></button>
+                            <button class="action-btn"><span class="icon">📊</span><span class="label">Nilai</span></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">Kursus Saya</h3><button class="card-link" onclick="showPage('courses')">Lihat Semua →</button></div>
+                        <div class="courses-scroll">
+                            <div class="course-mini" onclick="showCourseDetail()">
+                                <div class="course-mini-thumb" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">📱</div>
+                                <div class="course-mini-info">
+                                    <h4>Basic Mobile Programming</h4>
+                                    <p>Sintha Istikomah, S.Kom.</p>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 75%; background: var(--primary);"></div></div>
+                                    <div class="course-footer"><span>75%</span><span class="tag tag-danger">2 tugas</span></div>
+                                </div>
+                            </div>
+                            <div class="course-mini" onclick="showCourseDetail()">
+                                <div class="course-mini-thumb" style="background: linear-gradient(135deg, #10b981, #34d399);">🗄️</div>
+                                <div class="course-mini-info">
+                                    <h4>Basis Data</h4>
+                                    <p>Dr. Ahmad Fauzi, M.Kom</p>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 60%; background: #10b981;"></div></div>
+                                    <div class="course-footer"><span>60%</span><span class="tag tag-danger">1 tugas</span></div>
+                                </div>
+                            </div>
+                            <div class="course-mini" onclick="showCourseDetail()">
+                                <div class="course-mini-thumb" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">🤖</div>
+                                <div class="course-mini-info">
+                                    <h4>Kecerdasan Buatan</h4>
+                                    <p>Sintha Istikomah, S.Kom.</p>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 45%; background: #8b5cf6;"></div></div>
+                                    <div class="course-footer"><span>45%</span><span class="tag tag-danger">3 tugas</span></div>
+                                </div>
+                            </div>
+                            <div class="course-mini" onclick="showCourseDetail()">
+                                <div class="course-mini-thumb" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">🖥️</div>
+                                <div class="course-mini-info">
+                                    <h4>Interaksi Manusia Komputer</h4>
+                                    <p>Dr. Budi Santoso, M.Cs</p>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 55%; background: #06b6d4;"></div></div>
+                                    <div class="course-footer"><span>55%</span><span class="tag tag-danger">1 tugas</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">⏰ Deadline Terdekat</h3></div>
+                        <div class="deadline-list">
+                            <div class="deadline-item urgent"><h5>Tugas Flutter Widget</h5><p>Basic Mobile Programming</p><span class="deadline-date" style="background: rgba(239,68,68,0.15); color: var(--danger);">2 Jan</span></div>
+                            <div class="deadline-item soon"><h5>Quiz Normalisasi Database</h5><p>Basis Data</p><span class="deadline-date" style="background: rgba(245,158,11,0.15); color: var(--warning);">5 Jan</span></div>
+                            <div class="deadline-item ok"><h5>Makalah Etika Profesi</h5><p>Etika Bisnis dan Profesi</p><span class="deadline-date" style="background: rgba(16,185,129,0.15); color: var(--secondary);">10 Jan</span></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">📅 Januari 2026</h3></div>
+                        <div class="mini-cal">
+                            <span class="day-name">Sen</span><span class="day-name">Sel</span><span class="day-name">Rab</span><span class="day-name">Kam</span><span class="day-name">Jum</span><span class="day-name">Sab</span><span class="day-name">Min</span>
+                            <span class="day"></span><span class="day"></span><span class="day"></span><span class="day today">1</span><span class="day event">2</span><span class="day">3</span><span class="day">4</span>
+                            <span class="day event">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day event">10</span><span class="day">11</span>
+                            <span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span>
+                            <span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span><span class="day">25</span>
+                            <span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day">31</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses Page -->
+        <div id="courses" class="page">
+            <div class="page-header">
+                <div><h1 class="page-title">Kursus Saya</h1><p class="page-subtitle">Semester III - 2025/2026</p></div>
+                <div class="filters"><select class="filter-select"><option>Semua Semester</option><option selected>Semester III</option><option>Semester II</option></select></div>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">📱<span class="new-badge">1 Baru</span></div>
+                    <div class="course-content">
+                        <span class="course-code">202520261023</span>
+                        <h3>Basic Mobile Programming</h3>
+                        <p class="course-lecturer">👤 Sintha Istikomah, S.Kom., M.Eng</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>75%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 75%; background: linear-gradient(90deg, var(--primary), var(--primary-light));"></div></div></div>
+                        <div class="course-tags"><span class="course-tag tasks">📝 2 Tugas</span><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, #10b981, #34d399);">🗄️</div>
+                    <div class="course-content">
+                        <span class="course-code">202520261024</span>
+                        <h3>Basis Data</h3>
+                        <p class="course-lecturer">👤 Dr. Ahmad Fauzi, M.Kom</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>60%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 60%; background: linear-gradient(90deg, #10b981, #34d399);"></div></div></div>
+                        <div class="course-tags"><span class="course-tag tasks">📝 1 Tugas</span><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">💼<span class="new-badge">2 Baru</span></div>
+                    <div class="course-content">
+                        <span class="course-code">202520261025</span>
+                        <h3>Etika Bisnis dan Profesi</h3>
+                        <p class="course-lecturer">👤 Prof. Susanto, M.M</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>90%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 90%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div></div></div>
+                        <div class="course-tags"><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">🤖<span class="new-badge">1 Baru</span></div>
+                    <div class="course-content">
+                        <span class="course-code">24255101</span>
+                        <h3>Kecerdasan Buatan</h3>
+                        <p class="course-lecturer">👤 Sintha Istikomah, S.Kom., M.Eng</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>45%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 45%; background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div></div></div>
+                        <div class="course-tags"><span class="course-tag tasks">📝 3 Tugas</span><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, #ec4899, #f472b6);">📊</div>
+                    <div class="course-content">
+                        <span class="course-code">202520261011</span>
+                        <h3>Statistika dan Probabilitas</h3>
+                        <p class="course-lecturer">👤 Ir. Masruki Kabib, M.T.</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>80%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 80%; background: linear-gradient(90deg, #ec4899, #f472b6);"></div></div></div>
+                        <div class="course-tags"><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+                <div class="course-card" onclick="showCourseDetail()">
+                    <div class="course-thumb" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">🖥️<span class="new-badge">3 Baru</span></div>
+                    <div class="course-content">
+                        <span class="course-code">202520261026</span>
+                        <h3>Interaksi Manusia Komputer</h3>
+                        <p class="course-lecturer">👤 Dr. Budi Santoso, M.Cs</p>
+                        <div class="progress-section"><div class="progress-header"><span>Progress</span><span>55%</span></div><div class="progress-bar-lg"><div class="progress-fill" style="width: 55%; background: linear-gradient(90deg, #06b6d4, #22d3ee);"></div></div></div>
+                        <div class="course-tags"><span class="course-tag tasks">📝 1 Tugas</span><span class="course-tag semester">Semester III</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Detail Page -->
+        <div id="courseDetail" class="page">
+            <div class="breadcrumb"><button onclick="showPage('courses')">← Kembali ke Kursus</button></div>
+            <div class="course-header" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">
+                <div><span class="code-badge">202520261023</span><h1>Basic Mobile Programming</h1><p class="lecturer">👤 Sintha Istikomah, S.Kom., M.Eng</p><p class="info">Semester III • 2 SKS • Fakultas Ilmu Komputer</p></div>
+                <div class="progress-display"><div class="value">75%</div><div class="label">Progress</div></div>
+            </div>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('materials')">📚 Materi</button>
+                <button class="tab" onclick="showTab('assignments')">📝 Tugas</button>
+                <button class="tab" onclick="showTab('attendance')">✅ Kehadiran</button>
+                <button class="tab" onclick="showTab('grades')">📊 Nilai</button>
+                <button class="tab" onclick="showTab('forum')">💬 Forum</button>
+            </div>
+            <!-- Materials Tab -->
+            <div id="materials" class="tab-content active">
+                <h3 style="margin-bottom: 16px; font-size: 16px;">Materi Perkuliahan</h3>
+                <div class="week-section">
+                    <div class="week-header"><div><span class="week-badge">Week 1</span><span class="week-title">Pengenalan Flutter dan Mobile Programming</span></div><span>▼</span></div>
+                    <div class="week-content">
+                        <div class="material-item"><div class="material-info"><div class="material-icon pdf">📄</div><div class="material-text"><h5>Materi pengantar mobile (native vs hybrid vs Flutter)</h5></div></div><span class="status-done">✓ Selesai</span></div>
+                        <div class="material-item"><div class="material-info"><div class="material-icon link">🔗</div><div class="material-text"><h5>Tutorial instalasi Flutter SDK</h5></div></div><span class="status-done">✓ Selesai</span></div>
+                        <div class="material-item"><div class="material-info"><div class="material-icon video">🎬</div><div class="material-text"><h5>Video: Setup Development Environment</h5></div></div><button class="btn btn-primary">Buka</button></div>
+                    </div>
+                </div>
+                <div class="week-section">
+                    <div class="week-header"><div><span class="week-badge">Week 2</span><span class="week-title">Dasar-dasar Dart Programming</span></div><span>▼</span></div>
+                    <div class="week-content">
+                        <div class="material-item"><div class="material-info"><div class="material-icon pdf">📄</div><div class="material-text"><h5>Sintaks Dasar Dart</h5></div></div><span class="status-done">✓ Selesai</span></div>
+                        <div class="material-item"><div class="material-info"><div class="material-icon quiz">❓</div><div class="material-text"><h5>Quiz: Dart Fundamentals</h5></div></div><button class="btn btn-primary">Kerjakan</button></div>
+                    </div>
+                </div>
+                <div class="week-section">
+                    <div class="week-header"><div><span class="week-badge">Week 3</span><span class="week-title">Flutter Widgets</span></div><span>▼</span></div>
+                    <div class="week-content">
+                        <div class="material-item"><div class="material-info"><div class="material-icon pdf">📄</div><div class="material-text"><h5>Stateless vs Stateful Widget</h5></div></div><button class="btn btn-primary">Buka</button></div>
+                        <div class="material-item"><div class="material-info"><div class="material-icon assignment">📝</div><div class="material-text"><h5>Tugas: Membuat Layout Sederhana</h5><p>⏰ Deadline: 2 Januari 2026</p></div></div><button class="btn btn-primary">Upload</button></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Assignments Tab -->
+            <div id="assignments" class="tab-content">
+                <h3 style="margin-bottom: 16px; font-size: 16px;">Daftar Tugas</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="padding: 14px; border-radius: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;"><div><h5 style="margin-bottom: 4px; font-size: 14px;">Tugas 1: Layout Flutter</h5><p style="color: var(--text-secondary); font-size: 12px;">Deadline: 2 Januari 2026</p></div><button class="btn btn-primary">Upload Tugas</button></div>
+                    <div style="padding: 14px; border-radius: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;"><div><h5 style="margin-bottom: 4px; font-size: 14px;">Tugas 2: State Management</h5><p style="color: var(--text-secondary); font-size: 12px;">Deadline: 10 Januari 2026</p></div><button class="btn btn-primary">Upload Tugas</button></div>
+                    <div style="padding: 14px; border-radius: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;"><div><h5 style="margin-bottom: 4px; font-size: 14px;">Quiz: Dart Fundamentals</h5><p style="color: var(--text-secondary); font-size: 12px;">Selesai: 20 Desember 2025</p></div><span style="padding: 6px 14px; border-radius: 8px; background: rgba(16,185,129,0.15); color: var(--secondary); font-weight: 600; font-size: 13px;">Nilai: 85</span></div>
+                </div>
+            </div>
+            <!-- Attendance Tab -->
+            <div id="attendance" class="tab-content">
+                <div class="attendance-header"><h3 style="font-size: 16px;">Daftar Kehadiran</h3><button class="btn-attendance" onclick="openModal()">📸 Absen Sekarang</button></div>
+                <div class="attendance-stats">
+                    <div class="att-stat" style="background: rgba(139,21,56,0.1);"><div class="value" style="color: var(--primary);">14</div><div class="label" style="color: var(--text-secondary);">Total</div></div>
+                    <div class="att-stat" style="background: rgba(16,185,129,0.1);"><div class="value" style="color: var(--secondary);">11</div><div class="label" style="color: var(--text-secondary);">Hadir</div></div>
+                    <div class="att-stat" style="background: rgba(239,68,68,0.1);"><div class="value" style="color: var(--danger);">1</div><div class="label" style="color: var(--text-secondary);">Tidak Hadir</div></div>
+                    <div class="att-stat" style="background: rgba(245,158,11,0.1);"><div class="value" style="color: var(--warning);">2</div><div class="label" style="color: var(--text-secondary);">Belum</div></div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="att-table">
+                        <thead><tr><th>Tanggal</th><th>Waktu</th><th style="text-align: center;">Status</th><th style="text-align: center;">Poin</th><th style="text-align: center;">Aksi</th></tr></thead>
+                        <tbody>
+                            <tr><td>4 Des 2025</td><td>10:40 - 11:59</td><td style="text-align: center;"><span class="status-badge hadir">Hadir</span></td><td style="text-align: center;">2/2</td><td></td></tr>
+                            <tr><td>11 Des 2025</td><td>10:40 - 11:59</td><td style="text-align: center;"><span class="status-badge hadir">Hadir</span></td><td style="text-align: center;">2/2</td><td></td></tr>
+                            <tr><td>18 Des 2025</td><td>10:40 - 11:59</td><td style="text-align: center;"><span class="status-badge tidak">Tidak Hadir</span></td><td style="text-align: center;">0/2</td><td></td></tr>
+                            <tr><td>1 Jan 2026</td><td>10:40 - 11:59</td><td style="text-align: center;"><span class="status-badge belum">Belum</span></td><td style="text-align: center;">-</td><td style="text-align: center;"><button class="btn btn-primary" onclick="openModal()">Absen</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Grades Tab -->
+            <div id="grades" class="tab-content"><div style="text-align: center; padding: 40px 20px;"><span style="font-size: 56px;">📊</span><h3 style="margin-top: 12px; font-size: 18px;">Halaman Nilai</h3><p style="color: var(--text-secondary); font-size: 14px;">Fitur nilai akan segera hadir</p></div></div>
+            <!-- Forum Tab -->
+            <div id="forum" class="tab-content"><div style="text-align: center; padding: 40px 20px;"><span style="font-size: 56px;">💬</span><h3 style="margin-top: 12px; font-size: 18px;">Forum Diskusi</h3><p style="color: var(--text-secondary); font-size: 14px;">Fitur forum akan segera hadir</p></div></div>
+        </div>
+
+        <!-- Calendar Page -->
+        <div id="calendar" class="page">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">📅 Kalender Akademik</h1>
+                    <p class="page-subtitle">Lihat jadwal kegiatan, kehadiran, dan deadline tugas</p>
+                </div>
+            </div>
+            
+            <div class="calendar-container">
+                <!-- Main Calendar -->
+                <div class="calendar-main">
+                    <div class="calendar-header">
+                        <div class="calendar-title">
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn" onclick="changeMonth(-1)">◀</button>
+                                <span class="calendar-month" id="calendarMonth">Januari 2026</span>
+                                <button class="calendar-nav-btn" onclick="changeMonth(1)">▶</button>
+                            </div>
+                        </div>
+                        <div class="calendar-actions">
+                            <select class="calendar-filter">
+                                <option>Semua kursus</option>
+                                <option>Basic Mobile Programming</option>
+                                <option>Basis Data</option>
+                                <option>Kecerdasan Buatan</option>
+                                <option>Interaksi Manusia Komputer</option>
+                                <option>Etika Bisnis dan Profesi</option>
+                            </select>
+                            <button class="btn-add-event" onclick="openEventModal()">➕ Acara baru</button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar Header -->
+                        <div class="calendar-day-header">Sen</div>
+                        <div class="calendar-day-header">Sel</div>
+                        <div class="calendar-day-header">Rab</div>
+                        <div class="calendar-day-header">Kam</div>
+                        <div class="calendar-day-header">Jum</div>
+                        <div class="calendar-day-header">Sab</div>
+                        <div class="calendar-day-header">Min</div>
+                        
+                        <!-- Week 1 -->
+                        <div class="calendar-day other-month"><div class="day-number">29</div></div>
+                        <div class="calendar-day other-month"><div class="day-number">30</div></div>
+                        <div class="calendar-day other-month"><div class="day-number">31</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">1</div>
+                            <div class="day-events">
+                                <div class="day-event kehadiran" onclick="showEventDetail('kehadiran')">🟡 Kehadiran</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day today">
+                            <div class="day-number">2</div>
+                            <div class="day-events">
+                                <div class="day-event presensi" onclick="showEventDetail('presensi')">🔴 Presensi</div>
+                                <div class="day-event tugas" onclick="showEventDetail('tugas')">📝 Tugas Flutter</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">3</div></div>
+                        <div class="calendar-day"><div class="day-number">4</div></div>
+                        
+                        <!-- Week 2 -->
+                        <div class="calendar-day">
+                            <div class="day-number">5</div>
+                            <div class="day-events">
+                                <div class="day-event quiz" onclick="showEventDetail('quiz')">📋 Quiz Database</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">6</div></div>
+                        <div class="calendar-day"><div class="day-number">7</div></div>
+                        <div class="calendar-day"><div class="day-number">8</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">9</div>
+                            <div class="day-events">
+                                <div class="day-event presensi" onclick="showEventDetail('presensi')">🔴 Presensi</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">10</div>
+                            <div class="day-events">
+                                <div class="day-event tugas" onclick="showEventDetail('tugas')">📝 Makalah Etika</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">11</div></div>
+                        
+                        <!-- Week 3 -->
+                        <div class="calendar-day"><div class="day-number">12</div></div>
+                        <div class="calendar-day"><div class="day-number">13</div></div>
+                        <div class="calendar-day"><div class="day-number">14</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">15</div>
+                            <div class="day-events">
+                                <div class="day-event meeting" onclick="showEventDetail('meeting')">👥 Bimbingan</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">16</div>
+                            <div class="day-events">
+                                <div class="day-event presensi" onclick="showEventDetail('presensi')">🔴 Presensi</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">17</div></div>
+                        <div class="calendar-day"><div class="day-number">18</div></div>
+                        
+                        <!-- Week 4 -->
+                        <div class="calendar-day"><div class="day-number">19</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">20</div>
+                            <div class="day-events">
+                                <div class="day-event tugas" onclick="showEventDetail('tugas')">📝 Tugas AI</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">21</div></div>
+                        <div class="calendar-day"><div class="day-number">22</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">23</div>
+                            <div class="day-events">
+                                <div class="day-event presensi" onclick="showEventDetail('presensi')">🔴 Presensi</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">24</div></div>
+                        <div class="calendar-day"><div class="day-number">25</div></div>
+                        
+                        <!-- Week 5 -->
+                        <div class="calendar-day"><div class="day-number">26</div></div>
+                        <div class="calendar-day"><div class="day-number">27</div></div>
+                        <div class="calendar-day"><div class="day-number">28</div></div>
+                        <div class="calendar-day"><div class="day-number">29</div></div>
+                        <div class="calendar-day">
+                            <div class="day-number">30</div>
+                            <div class="day-events">
+                                <div class="day-event presensi" onclick="showEventDetail('presensi')">🔴 Presensi</div>
+                            </div>
+                        </div>
+                        <div class="calendar-day"><div class="day-number">31</div></div>
+                        <div class="calendar-day other-month"><div class="day-number">1</div></div>
+                    </div>
+                </div>
+                
+                <!-- Calendar Sidebar -->
+                <div class="calendar-sidebar">
+                    <!-- Mini Calendar -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">📅 Januari 2026</h3>
+                        <div class="sidebar-mini-cal">
+                            <span class="day-name">Sen</span>
+                            <span class="day-name">Sel</span>
+                            <span class="day-name">Rab</span>
+                            <span class="day-name">Kam</span>
+                            <span class="day-name">Jum</span>
+                            <span class="day-name">Sab</span>
+                            <span class="day-name">Min</span>
+                            <span class="day" style="color: #cbd5e1;">29</span>
+                            <span class="day" style="color: #cbd5e1;">30</span>
+                            <span class="day" style="color: #cbd5e1;">31</span>
+                            <span class="day has-event">1</span>
+                            <span class="day today has-event">2</span>
+                            <span class="day">3</span>
+                            <span class="day">4</span>
+                            <span class="day has-event">5</span>
+                            <span class="day">6</span>
+                            <span class="day">7</span>
+                            <span class="day">8</span>
+                            <span class="day has-event">9</span>
+                            <span class="day has-event">10</span>
+                            <span class="day">11</span>
+                            <span class="day">12</span>
+                            <span class="day">13</span>
+                            <span class="day">14</span>
+                            <span class="day has-event">15</span>
+                            <span class="day has-event">16</span>
+                            <span class="day">17</span>
+                            <span class="day">18</span>
+                            <span class="day">19</span>
+                            <span class="day has-event">20</span>
+                            <span class="day">21</span>
+                            <span class="day">22</span>
+                            <span class="day has-event">23</span>
+                            <span class="day">24</span>
+                            <span class="day">25</span>
+                            <span class="day">26</span>
+                            <span class="day">27</span>
+                            <span class="day">28</span>
+                            <span class="day">29</span>
+                            <span class="day has-event">30</span>
+                            <span class="day">31</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Events -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">⏰ Acara Mendatang</h3>
+                        <div class="upcoming-events">
+                            <div class="upcoming-event" onclick="showEventDetail('tugas')">
+                                <div class="event-date-box">
+                                    <span class="day">2</span>
+                                    <span class="month">Jan</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Tugas Flutter Widget</h4>
+                                    <p>Basic Mobile Programming</p>
+                                    <span class="event-type tugas">📝 Tugas</span>
+                                </div>
+                            </div>
+                            <div class="upcoming-event" onclick="showEventDetail('quiz')">
+                                <div class="event-date-box">
+                                    <span class="day">5</span>
+                                    <span class="month">Jan</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Quiz Normalisasi Database</h4>
+                                    <p>Basis Data</p>
+                                    <span class="event-type presensi">📋 Quiz</span>
+                                </div>
+                            </div>
+                            <div class="upcoming-event" onclick="showEventDetail('tugas')">
+                                <div class="event-date-box">
+                                    <span class="day">10</span>
+                                    <span class="month">Jan</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Makalah Etika Profesi</h4>
+                                    <p>Etika Bisnis dan Profesi</p>
+                                    <span class="event-type tugas">📝 Tugas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-card-title">🏷️ Keterangan</h3>
+                        <div class="legend-list">
+                            <div class="legend-item">
+                                <div class="legend-color kehadiran"></div>
+                                <span>Kehadiran</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color presensi"></div>
+                                <span>Presensi</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color tugas"></div>
+                                <span>Tugas</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color quiz"></div>
+                                <span>Quiz</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color meeting"></div>
+                                <span>Bimbingan/Meeting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile" class="page">
+            <!-- Profile Header Banner -->
+            <div class="profile-header-banner">
+                <div class="profile-header-content">
+                    <div class="profile-avatar-large">
+                        AS
+                        <button class="avatar-edit-btn" onclick="openEditModal('photo')">📷</button>
+                    </div>
+                    <div class="profile-header-info">
+                        <h1 class="profile-header-name">Ahmad Saiful</h1>
+                        <p class="profile-nim">NIM: 2024102004</p>
+                        <div class="profile-prodi">
+                            <span class="profile-prodi-badge">🎓 S1 Teknik Informatika</span>
+                            <span class="profile-prodi-badge">📍 Fakultas Ilmu Komputer</span>
+                        </div>
+                    </div>
+                    <div class="profile-header-actions">
+                        <button class="btn-white" onclick="openEditModal('profile')">✏️ Edit Profil</button>
+                        <button class="btn-outline-white">💬 Pesan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content Grid -->
+            <div class="profile-grid">
+                <!-- Left Column -->
+                <div class="profile-left">
+                    <!-- Detail Pengguna -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(139,21,56,0.1);">👤</span>Detail Pengguna</h2>
+                            <button class="profile-card-action" onclick="openEditModal('profile')">Edit ✏️</button>
+                        </div>
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(59,130,246,0.1);">📧</div>
+                                <div class="detail-content"><div class="detail-label">Alamat Email</div><div class="detail-value"><a href="/cdn-cgi/l/email-protection#7e1f16131f1a210d1f17180b123e0b0d0e501f1d50171a"><span class="__cf_email__" data-cfemail="d9b8b1b4b8bd86aab8b0bfacb599acaaa9f7b8baf7b0bd">[email&#160;protected]</span></a></div><div class="detail-note">Terlihat oleh peserta kursus yang lain</div></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(16,185,129,0.1);">📱</div>
+                                <div class="detail-content"><div class="detail-label">No. Telepon</div><div class="detail-value">+62 812-3456-7890</div></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(245,158,11,0.1);">🌍</div>
+                                <div class="detail-content"><div class="detail-label">Negara</div><div class="detail-value">Indonesia</div></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(139,92,246,0.1);">📍</div>
+                                <div class="detail-content"><div class="detail-label">Kota</div><div class="detail-value">Pati, Jawa Tengah</div></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(6,182,212,0.1);">🕐</div>
+                                <div class="detail-content"><div class="detail-label">Zona Waktu</div><div class="detail-value">Asia/Jakarta (WIB)</div></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon" style="background: rgba(236,72,153,0.1);">🎓</div>
+                                <div class="detail-content"><div class="detail-label">Program Studi</div><div class="detail-value">S1 Teknik Informatika</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Kursus -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(16,185,129,0.1);">📚</span>Detail Kursus</h2>
+                            <button class="profile-card-action" onclick="showPage('courses')">Lihat Semua →</button>
+                        </div>
+                        <div class="profile-course-list">
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">📱</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Basic Mobile Programming</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">🗄️</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Basis Data</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">🤖</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Kecerdasan Buatan</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">🖥️</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Interaksi Manusia dan Komputer</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">💼</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Etika Bisnis dan Profesi</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">🌐</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Jaringan Komputer</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">💻</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Sistem Operasi</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                            <div class="profile-course-item" onclick="showCourseDetail()">
+                                <div class="profile-course-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">🏛️</div>
+                                <div class="profile-course-info"><span class="profile-course-code">202520261023</span><div class="profile-course-name">Pancasila</div></div>
+                                <span class="profile-course-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privasi dan Kebijakan -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(139,92,246,0.1);">🔒</span>Privasi dan Kebijakan</h2>
+                        </div>
+                        <div class="quick-links">
+                            <div class="quick-link"><span>📋</span>Ringkasan retensi data<span>→</span></div>
+                            <div class="quick-link"><span>📜</span>Kebijakan privasi<span>→</span></div>
+                            <div class="quick-link"><span>⚙️</span>Pengaturan privasi<span>→</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="profile-right">
+                    <!-- Statistik -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(245,158,11,0.1);">📊</span>Statistik</h2>
+                        </div>
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-item"><div class="profile-stat-icon" style="background: rgba(139,21,56,0.1);">📚</div><div class="profile-stat-value" style="color: var(--primary);">8</div><div class="profile-stat-label">Kursus Aktif</div></div>
+                            <div class="profile-stat-item"><div class="profile-stat-icon" style="background: rgba(16,185,129,0.1);">✅</div><div class="profile-stat-value" style="color: var(--secondary);">92%</div><div class="profile-stat-label">Kehadiran</div></div>
+                            <div class="profile-stat-item"><div class="profile-stat-icon" style="background: rgba(245,158,11,0.1);">⭐</div><div class="profile-stat-value" style="color: var(--warning);">3.65</div><div class="profile-stat-label">IP Semester</div></div>
+                            <div class="profile-stat-item"><div class="profile-stat-icon" style="background: rgba(139,92,246,0.1);">📝</div><div class="profile-stat-value" style="color: var(--purple);">24</div><div class="profile-stat-label">Tugas Selesai</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas Log Masuk -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(6,182,212,0.1);">🕐</span>Aktivitas Log Masuk</h2>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item"><div class="activity-icon" style="background: rgba(16,185,129,0.1);">🟢</div><div class="activity-content"><div class="activity-title">Akses Pertama Kali</div><div class="activity-date">Jumat, 11 Oktober 2024, 12:04</div><div class="activity-meta">1 tahun 82 hari yang lalu</div></div></div>
+                            <div class="activity-item"><div class="activity-icon" style="background: rgba(59,130,246,0.1);">🔵</div><div class="activity-content"><div class="activity-title">Akses Terakhir ke Situs</div><div class="activity-date">Kamis, 1 Januari 2026, 22:16</div><div class="activity-meta">Baru saja (15 detik)</div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Lain-lain -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(236,72,153,0.1);">📌</span>Lain-lain</h2>
+                        </div>
+                        <div class="quick-links">
+                            <div class="quick-link"><span>📝</span>Entri blog<span>→</span></div>
+                            <div class="quick-link"><span>📮</span>Kiriman forum<span>→</span></div>
+                            <div class="quick-link"><span>💬</span>Forum diskusi<span>→</span></div>
+                            <div class="quick-link"><span>📅</span>Rencana pembelajaran<span>→</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Laporan -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(59,130,246,0.1);">📈</span>Laporan</h2>
+                        </div>
+                        <div class="quick-links">
+                            <div class="quick-link"><span>🌐</span>Sesi peramban<span>→</span></div>
+                            <div class="quick-link"><span>📊</span>Ikhtisar nilai<span>→</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Aplikasi Seluler -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h2 class="profile-card-title"><span class="profile-card-title-icon" style="background: rgba(16,185,129,0.1);">📱</span>Aplikasi Seluler</h2>
+                        </div>
+                        <div class="qr-section">
+                            <div class="qr-code"><span>📱 QR Code</span></div>
+                            <h3 class="qr-title">Kode QR untuk akses aplikasi seluler</h3>
+                            <p class="qr-desc">Pindai kode QR dengan aplikasi seluler Anda dan Anda akan masuk secara otomatis. Kode QR akan kedaluwarsa dalam 10 menit.</p>
+                            <button class="btn-qr">📲 Lihat Kode QR</button>
+                            <div class="app-download">
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Situs ini mengaktifkan akses aplikasi seluler.</p>
+                                <a href="#" class="app-download-link">📥 Unduh aplikasi seluler</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Attendance Modal -->
+    <div id="attendanceModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header"><h2>📸 Absensi Digital</h2><button class="modal-close" onclick="closeModal()">×</button></div>
+            <div class="modal-steps">
+                <div class="step done" id="step1"><div class="step-circle">📍</div><span class="step-label">Lokasi</span></div>
+                <div class="step active" id="step2"><div class="step-circle">⏰</div><span class="step-label">Waktu</span></div>
+                <div class="step" id="step3"><div class="step-circle">📸</div><span class="step-label">Wajah</span></div>
+            </div>
+            <div class="modal-body" id="modalStep1">
+                <div class="verify-icon success">📍</div><h3 class="verify-title">Verifikasi Lokasi</h3><p class="verify-desc">Memastikan Anda berada dalam radius kampus USP</p>
+                <div class="verify-info"><div class="verify-row"><span>Lokasi Anda:</span><span>-6.660234, 111.043821</span></div><div class="verify-row"><span>Lokasi Kampus:</span><span>-6.660100, 111.043500</span></div><div class="verify-row"><span>Jarak:</span><span class="success">35 meter ✓</span></div></div>
+                <div class="verify-alert">✅ Anda berada dalam radius 50 meter dari kampus</div>
+                <button class="btn-full primary" onclick="nextStep(2)">Lanjutkan</button>
+            </div>
+            <div class="modal-body" id="modalStep2" style="display: none;">
+                <div class="verify-icon success">⏰</div><h3 class="verify-title">Verifikasi Waktu</h3><p class="verify-desc">Memastikan Anda absen dalam waktu yang ditentukan</p>
+                <div class="verify-info"><div class="verify-row"><span>Mata Kuliah:</span><span>Basic Mobile Programming</span></div><div class="verify-row"><span>Waktu Absen:</span><span>10:40 - 11:59 WIB</span></div><div class="verify-row"><span>Waktu Sekarang:</span><span>10:52 WIB</span></div><div class="verify-row"><span>Sisa Waktu:</span><span style="color: var(--warning); font-weight: 600;">01:07:00</span></div></div>
+                <div class="verify-alert">✅ Anda berada dalam rentang waktu absensi</div>
+                <button class="btn-full primary" onclick="nextStep(3)">Lanjutkan ke Verifikasi Wajah</button>
+            </div>
+            <div class="modal-body" id="modalStep3" style="display: none;">
+                <h3 class="verify-title">Verifikasi Wajah</h3><p class="verify-desc">Posisikan wajah Anda dalam bingkai</p>
+                <div class="camera-preview"><div class="face-guide"><span>👤</span></div><div class="camera-status">📷 Kamera aktif</div></div>
+                <div class="similarity-bar"><div class="similarity-header"><span>Kemiripan Wajah:</span><span>87%</span></div><div class="similarity-track"><div class="similarity-fill" style="width: 87%;"></div></div><p class="similarity-note">Minimum 60% untuk absensi valid</p></div>
+                <button class="btn-full success" onclick="nextStep(4)">📸 Ambil Foto & Konfirmasi</button>
+            </div>
+            <div class="modal-body" id="modalStep4" style="display: none;">
+                <div class="verify-icon success success-animation" style="width: 90px; height: 90px; font-size: 44px;">✅</div>
+                <h2 style="color: var(--secondary); margin: 14px 0 6px; font-size: 20px;">Absensi Berhasil!</h2>
+                <p style="color: var(--text-secondary); font-size: 14px;">Waktu: 10:52:34 WIB</p>
+                <p style="color: var(--text-secondary); font-size: 14px;">Similarity Score: 87%</p>
+                <button class="btn-full primary" style="margin-top: 20px;" onclick="closeModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal --dal-body" style="text-align: left;">
+                <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" class="form-input" value="Ahmad Saiful"></div>
+                <div class="form-group"><label class="form-label">NIM</label><input type="text" class="form-input" value="2024102004" disabled></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" value="ahmad_saiful@usp.ac.id"></div>
+                <div class="form-group"><label class="form-label">No. Telepon</label><input type="tel" class="form-input" value="+62 812-3456-7890"></div>
+                <div class="form-group"><label class="form-label">Kota</label><input type="text" class="form-input" value="Pati, Jawa Tengah"></div>
+                <div class="form-group"><label class="form-label">Program Studi</label><input type="text" class="form-input" value="S1 Teknik Informatika" disabled></div>
+            </div>
+            <div class="modal-footer"><button class="btn-secondary" onclick="closeEditModal('profile')">Batal</button><button class="btn-primary-modal" onclick="saveProfile()">💾 Simpan</button></div>
+        </div>
+    </div>
+
+    <!-- Edit Photo Modal -->
+    <div id="editPhotoModal" class="modal-overlay">
+        <div class="modal modal-lg">
+            <div class="modal-header"><h2>📷 Ubah Foto Profil</h2><button class="modal-close" onclick="closeEditModal('photo')">×</button></div>
+            <div class="modal-body">
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: var(--bg); margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 64px; border: 3px dashed var(--border);">AS</div>
+                <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">Pilih foto baru untuk profil Anda.<br>Format: JPG, PNG (Max 2MB)</p>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                <button class="btn-primary-modal" onclick="document.getElementById('photoInput').click()" style="width: 100%;">📁 Pilih Foto</button>
+            </div>
+            <div class="modal-footer"><button class="btn-secondary" onclick="closeEditModal('photo')">Batal</button><button class="btn-primary-modal">💾 Simpan</button></div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const navLink = document.querySelector(`.nav-link[onclick="showPage('${pageId}')"]`);
+            if (navLink) navLink.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showCourseDetail() {
+            showPage('courseDetail');
+        }
+
+        // Tab Navigation
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Attendance Modal
+        function openModal() {
+            document.getElementById('attendanceModal').classList.add('show');
+            resetModal();
+        }
+
+        function closeModal() {
+            document.getElementById('attendanceModal').classList.remove('show');
+            resetModal();
+        }
+
+        function resetModal() {
+            document.getElementById('modalStep1').style.display = 'block';
+            document.getElementById('modalStep2').style.display = 'none';
+            document.getElementById('modalStep3').style.display = 'none';
+            document.getElementById('modalStep4').style.display = 'none';
+            document.getElementById('step1').className = 'step done';
+            document.getElementById('step2').className = 'step active';
+            document.getElementById('step3').className = 'step';
+        }
+
+        function nextStep(step) {
+            if (step === 2) {
+                document.getElementById('modalStep1').style.display = 'none';
+                document.getElementById('modalStep2').style.display = 'block';
+                document.getElementById('step1').className = 'step done';
+                document.getElementById('step2').className = 'step active';
+            } else if (step === 3) {
+                document.getElementById('modalStep2').style.display = 'none';
+                document.getElementById('modalStep3').style.display = 'block';
+                document.getElementById('step2').className = 'step done';
+                document.getElementById('step3').className = 'step active';
+            } else if (step === 4) {
+                document.getElementById('modalStep3').style.display = 'none';
+                document.getElementById('modalStep4').style.display = 'block';
+                document.getElementById('step3').className = 'step done';
+            }
+        }
+
+        // Edit Modals
+        function openEditModal(type) {
+            if (type === 'profile') {
+                document.getElementById('editProfileModal').classList.add('show');
+            } else if (type === 'photo') {
+                document.getElementById('editPhotoModal').classList.add('show');
+            }
+        }
+
+        function closeEditModal(type) {
+            if (type === 'profile') {
+                document.getElementById('editProfileModal').classList.remove('show');
+            } else if (type === 'photo') {
+                document.getElementById('editPhotoModal').classList.remove('show');
+            }
+        }
+
+        function saveProfile() {
+            alert('✅ Profil berhasil disimpan!');
+            closeEditModal('profile');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar?')) {
+                window.location.href = 'login_e-learning_usp.html';
+            }
+        }
+
+        // Calendar Functions
+        let currentMonth = 0; // 0 = January 2026
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth < 0) currentMonth = 11;
+            if (currentMonth > 11) currentMonth = 0;
+            document.getElementById('calendarMonth').textContent = months[currentMonth] + ' 2026';
+        }
+        
+        function showEventDetail(type) {
+            const messages = {
+                'kehadiran': '📅 Kehadiran\n\nMata Kuliah: Basic Mobile Programming\nDosen: Sintha Istikomah, S.Kom., M.Eng\nWaktu: 10:40 - 12:20 WIB\nRuang: Lab Komputer 1',
+                'presensi': '✅ Presensi\n\nSilakan lakukan presensi melalui menu Kehadiran di halaman kursus.\n\nPastikan lokasi GPS aktif dan wajah terdeteksi dengan baik.',
+                'tugas': '📝 Tugas\n\nTugas: Flutter Widget Implementation\nMata Kuliah: Basic Mobile Programming\nDeadline: 2 Januari 2026, 23:59 WIB\n\nDeskripsi: Implementasikan berbagai widget Flutter untuk membuat UI sederhana.',
+                'quiz': '📋 Quiz\n\nQuiz: Normalisasi Database\nMata Kuliah: Basis Data\nWaktu: 5 Januari 2026\nDurasi: 60 menit\n\nMateri: 1NF, 2NF, 3NF, BCNF',
+                'meeting': '👥 Bimbingan\n\nJadwal Bimbingan Skripsi\nDosen: Dr. Ahmad Fauzi, M.Kom\nWaktu: 15 Januari 2026, 09:00 WIB\nTempat: Ruang Dosen Lt. 2'
+            };
+            alert(messages[type] || 'Detail acara tidak tersedia');
+        }
+        
+        function openEventModal() {
+            alert('📅 Tambah Acara Baru\n\nFitur ini akan segera tersedia.\nAnda dapat menambahkan kegiatan pribadi, pengingat tugas, dan jadwal bimbingan.');
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
